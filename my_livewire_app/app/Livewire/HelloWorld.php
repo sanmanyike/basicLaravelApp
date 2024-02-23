@@ -87,12 +87,15 @@ class HelloWorld extends Component
 
     public function excelExport()
     {
-        return Excel::download(new ExcelExport, 'my_users.xlsx');
+        $model = User::all();
+
+        return Excel::download(new ExcelExport($model), 'my_users.xlsx');
     }
 
+    // TODO
     public function csvExport()
     {
-        // return Excel::download(new ExcelExport, 'my_users.xlsx');
+        // 
     }
 
     public function render()
