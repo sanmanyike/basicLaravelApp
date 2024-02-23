@@ -81,13 +81,13 @@
                         <th scope="col">Last Name</th>
                         <th scope="col">Email</th>
                         <th scope="col">
-                            <span>To Excel</span>&nbsp;
-                            <img width="30" height="30" src="https://img.icons8.com/fluency/48/microsoft-excel-2019.png" alt="microsoft-excel-2019" wire:click="export"/>
-                            {{-- <button wire:click="export">Export to Excel</button> --}}
-
+                            <span>Exports</span>&nbsp;
+                            <img width="40" height="40" src="https://img.icons8.com/fluency/48/microsoft-excel-2019.png" alt="microsoft-excel-2019" wire:click="excelExport"/>
+                            <img width="40" height="40" src="https://img.icons8.com/papercut/60/csv.png" alt="csv" wire:click="csvExport"/>
                         </th>
                     </tr>
                 </thead>
+                
                 <tbody>
                     @foreach($users as $user)
                         <tr>

@@ -3,15 +3,22 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
-use App\Models\User;
+use Illuminate\Support\Collection;
 
 class ExcelExport implements FromCollection
 {
+    private $model;
+
+    public function __construct(Collection $model)
+    {
+        $this->model = $model;
+    }
+
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function collection()
+    public function collection(): Collection
     {
-        return User::all();
+        return collect($this->model);
     }
 }
