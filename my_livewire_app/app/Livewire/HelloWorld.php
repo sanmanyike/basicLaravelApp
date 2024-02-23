@@ -85,9 +85,14 @@ class HelloWorld extends Component
         }
     }
 
-    public function export()
+    public function excelExport()
     {
         return Excel::download(new ExcelExport, 'my_users.xlsx');
+    }
+
+    public function csvExport()
+    {
+        // return Excel::download(new ExcelExport, 'my_users.xlsx');
     }
 
     public function render()
