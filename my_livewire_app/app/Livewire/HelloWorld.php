@@ -4,10 +4,10 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
-// use App\Http\Requests\UserRequest;
 use Livewire\WithPagination;
 use App\Exports\ExcelExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 
 class HelloWorld extends Component
 {
@@ -95,6 +95,7 @@ class HelloWorld extends Component
     // TODO
     public function csvExport()
     {
+        $model = User::all();
         // 
     }
 
