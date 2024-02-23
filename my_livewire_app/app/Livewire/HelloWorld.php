@@ -4,44 +4,65 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\User;
+// use App\Http\Requests\UserRequest;
+use Livewire\WithPagination;
+use App\Exports\ExcelExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HelloWorld extends Component
 {
+    use WithPagination;
+
     public $name;
     public $email;
     public $password;
 
     public function addNewUser()
     {
+        $this->validate(
+            [
+                "name"=> [
+                    "required",
+                    "string",
+                    "unique:users"
+                ],
+                "email"=> [
+                    "required",
+                    "string",
+                    "unique:users"
+                ],
+                "password"=> [
+                    "required",
+                ]
+            ]
+        );
+
         User::create([
             "name"     => $this->name,
             "email"    => $this->email,
             "password" => $this->password
-            // "email_verified_at" => null,
-            // "remember_token"    => null
         ]);
 
-        // dd("IT WORKS");
-        // try {
-        //     User::create([
-        //         "name"              => "User ". $this->increment,
-        //         "email"             => "san.manyike". $this->increment. "@gmail.com",
-        //         "password"          => "$2a$12\$GBHonbJ5oOCBP44XYyXcwu2sRf3ZdPm7oy98iNwpLO1cERqLjBCBW",
-        //         "email_verified_at" => null,
-        //         "remember_token"    => null
-        //     ]);
-                
-        //     return redirect()->route('dashboard')->with('success', 'User created');
-        // } catch (\Exception $e) {
-        //     // Handle the exception
-        //     return redirect()->back()->with('error', 'Failed to create user');
-        // }
+        $this->reset(
+            [
+                "name",
+                "email",
+                "password"
+            ]
+        );
+
+        request()->session()->flash("success_create","User created successfully");
     }
 
     // public function editUser(int $id)
     // {
     //     $user = User::find($id);
-        
+    //     return view('', compact('user'));
+    // }
+
+    // public function showUser(int $id)
+    // {
+    //     $user = User::find($id);
     //     return view('', compact('user'));
     // }
 
@@ -56,22 +77,24 @@ class HelloWorld extends Component
     public function deleteUser(int $id)
     {
         if ($id != auth()->user()->id) {
-            
             User::find($id)->delete();
+            request()->session()->flash("success_delete","User deleted successfully");
+
         } else {
-            dd("You can't delete yyour user");
+            request()->session()->flash("failed_delete","Failed to delete User");
         }
+    }
+
+    public function export()
+    {
+        return Excel::download(new ExcelExport, 'my_users.xlsx');
     }
 
     public function render()
     {
-        $test_data = [
-            'name' => 'Test Name',
-            'age' => 20
-        ];
+        $all_users = User::all();
+        $users = User::paginate(5);
 
-        $users = User::all();
-
-        return view('livewire.hello-world', compact('test_data', 'users'));
+        return view('livewire.hello-world', compact('users', 'all_users'));
     }
 }
