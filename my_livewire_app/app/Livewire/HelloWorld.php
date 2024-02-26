@@ -7,15 +7,20 @@ use App\Models\User;
 use Livewire\WithPagination;
 use App\Exports\ExcelExport;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\UsersExport;
+use App\Exports\CsvExport;
 
 class HelloWorld extends Component
 {
     use WithPagination;
 
+    public $search='';
     public $name;
     public $email;
     public $password;
+
+    // public function updatedSearch(){
+    //     $this->resetPage();
+    // }
 
     public function addNewUser()
     {
@@ -81,28 +86,30 @@ class HelloWorld extends Component
             request()->session()->flash("success_delete","User deleted successfully");
 
         } else {
-            request()->session()->flash("failed_delete","Failed to delete User");
+            request()->session()->flash("failed_delete","Failed to delete Current User");
         }
     }
 
+    // Excel data exports
     public function excelExport()
     {
-        $model = User::all();
-
-        return Excel::download(new ExcelExport($model), 'my_users.xlsx');
+        return Excel::download(new ExcelExport(User::all()), 'my_users_'. time(). '.xlsx');
     }
 
-    // TODO
+    // CSV Data export
     public function csvExport()
     {
-        $model = User::all();
-        // 
+        return Excel::download(new CsvExport(User::all()), 'my_users_'. time(). '.csv');
     }
 
     public function render()
     {
         $all_users = User::all();
-        $users = User::paginate(5);
+        $users = User::query()
+        ->when($this->search, function($q){
+            $q->where('name','like','%'. $this->search .'%')
+            ->orWhere('email','like','%'. $this->search .'%');
+        })->paginate(5);
 
         return view('livewire.hello-world', compact('users', 'all_users'));
     }

@@ -73,6 +73,7 @@
         
         <div class="mb-4"></div>
         <div class="pb-2" style="border-radius: 8px; padding: 0 10%;">
+            <input type="text" class="form-control" wire:model.live="search"/>
             <table class="table table-dark table-striped">
                 <thead>
                     <tr>
