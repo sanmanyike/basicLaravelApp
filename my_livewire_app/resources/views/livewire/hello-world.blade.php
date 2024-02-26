@@ -82,8 +82,8 @@
                         <th scope="col">Email</th>
                         <th scope="col">
                             <span>Exports</span>&nbsp;
-                            <img width="40" height="40" src="https://img.icons8.com/fluency/48/microsoft-excel-2019.png" alt="microsoft-excel-2019" wire:click="excelExport"/>
-                            <img width="40" height="40" src="https://img.icons8.com/papercut/60/csv.png" alt="csv" wire:click="csvExport"/>
+                            <img width="40" height="40" src="https://img.icons8.com/fluency/48/microsoft-excel-2019.png" alt="microsoft-excel-2019" wire:click="excelExport" style="cursor:pointer;"/>
+                            <img width="40" height="40" src="https://img.icons8.com/papercut/60/csv.png" alt="csv" wire:click="csvExport" style="cursor:pointer;"/>
                         </th>
                     </tr>
                 </thead>
