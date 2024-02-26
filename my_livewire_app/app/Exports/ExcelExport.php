@@ -17,14 +17,16 @@ class ExcelExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return [
-            'ID',
-            'Name',
-            'Email',
-            'email_verified_at',
-            'created_at',
-            'updated_at',
-        ];
+        $my_keys = array_keys($this->model->first()->toArray());
+        $count = 0;
+        $keys = [];
+
+        foreach ($my_keys as $key) {
+            $keys[$count] = ucfirst(str_replace('_', ' ', $key));
+            $count++;
+        }
+
+        return array_values($keys);
     }
 
     /**
